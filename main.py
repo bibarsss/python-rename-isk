@@ -1,7 +1,13 @@
 from pathlib import Path
 import unicodedata
 from pypdf import PdfReader
+import sys, io
 
+sys.stdout = io.TextIOWrapper(
+    sys.stdout.buffer, 
+    encoding="utf-8", 
+    line_buffering=True
+)
 
 def read(file_path: str)->str:
     reader = PdfReader(file_path)
@@ -21,6 +27,10 @@ for path in Path(".").rglob("*.pdf"):
     if "суд" in filename:
         text = read(str(path))
         if "исковое заявление" in text.lower():
-            new_path = path.with_name("Иск (1).pdf")
-            path.rename(new_path)
-            print(f"✅ Renamed: {path.name} -> {new_path.name}")
+            try:
+                new_path = path.with_name("Иск (1).pdf")
+                path.rename(new_path)
+                print(f"✅ Renamed: {path.name} -> {new_path.name}")
+            except Exception:
+                print(f"[ERROR]: {path.name} -> {new_path.name}")
+                continue
