@@ -56,7 +56,7 @@
  [],
  False,
  False,
- 1758550708,
+ 1758550913,
  [('run',
    '/Users/bibaryskoutepov/projects/python-rename-isk/.venv/lib/python3.13/site-packages/PyInstaller/bootloader/Darwin-64bit/run',
    'EXECUTABLE')],

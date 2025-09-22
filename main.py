@@ -14,7 +14,7 @@ def read(file_path: str)->str:
     
     return full_text
 
-print('Парсим все иски где в названии есть слово "суд", и содержит слово "ИСКОВОЕ ЗАЯВЛЕНИЕ" и переименовывает')
+print('Парсим все иски где в наз вании есть слово "суд", и содержит слово "ИСКОВОЕ ЗАЯВЛЕНИЕ" и переименовывает')
 
 for path in Path(".").rglob("*.pdf"):
     filename = unicodedata.normalize("NFC", path.name).lower()
