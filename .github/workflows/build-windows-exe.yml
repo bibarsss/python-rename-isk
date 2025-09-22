@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2025
+    runs-on: windows-2025  # Use latest stable Windows runner
 
     steps:
       # 1️⃣ Checkout repository
@@ -32,10 +32,17 @@ jobs:
       - name: Verify installed packages
         run: pip freeze
 
-      # 5️⃣ Build EXE with PyInstaller spec file
+      # 5️⃣ Clean previous builds and build EXE
       - name: Build EXE
         run: |
-          pyinstaller main.spec
+          echo "Cleaning previous build/dist folders..."
+          if exist build rmdir /s /q build
+          if exist dist rmdir /s /q dist
+
+          echo "Building EXE with PyInstaller..."
+          pyinstaller -y main.spec
+
+          echo "Listing output in dist folder..."
           dir dist
 
       # 6️⃣ Test run EXE inside CI (optional, but recommended)
