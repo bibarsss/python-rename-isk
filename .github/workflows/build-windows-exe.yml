@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2025  # Use latest stable Windows runner
+    runs-on: windows-latest  # Use latest stable Windows runner
 
     steps:
       # 1️⃣ Checkout repository
@@ -34,20 +34,23 @@ jobs:
 
       # 5️⃣ Clean previous builds and build EXE
       - name: Build EXE
+        shell: pwsh
         run: |
-          echo "Cleaning previous build/dist folders..."
-          if exist build rmdir /s /q build
-          if exist dist rmdir /s /q dist
+          Write-Host "Cleaning previous build/dist folders..."
+          
+          if (Test-Path build) { Remove-Item -Recurse -Force build }
+          if (Test-Path dist)  { Remove-Item -Recurse -Force dist }
 
-          echo "Building EXE with PyInstaller..."
+          Write-Host "Building EXE with PyInstaller..."
           pyinstaller -y main.spec
 
-          echo "Listing output in dist folder..."
-          dir dist
+          Write-Host "Listing output in dist folder..."
+          Get-ChildItem dist
 
-      # 6️⃣ Test run EXE inside CI (optional, but recommended)
+      # 6️⃣ Test run EXE inside CI (optional)
       # - name: Test EXE
-      #   run: dist\main.exe || exit 1
+      #   shell: pwsh
+      #   run: dist\main.exe
 
       # 7️⃣ Upload the EXE as an artifact
       - name: Upload EXE
